@@ -209,6 +209,10 @@ inline void Emulator::single_cycle() {
   dut_ptr->clock = 1;
   dut_ptr->eval();
 
+// wp begin
+//  printf("pc is %lx, cycles is : %ld\n", (difftest[0]->get_instr_commit(0))->pc, cycles);
+// wp end
+
 #ifdef WITH_DRAMSIM3
   axi_copy_from_dut_ptr(dut_ptr, axi);
   axi.aw.addr -= 0x80000000UL;
@@ -217,10 +221,13 @@ inline void Emulator::single_cycle() {
   axi_set_dut_ptr(dut_ptr, axi);
 #endif
 
+//printf("VM_RACE: %d, enable_waveform: %d \n", VM_TRACE, enable_waveform);
+
 #if VM_TRACE == 1
   if (enable_waveform) {
     auto trap = difftest[0]->get_trap_event();
     uint64_t cycle = trap->cycleCnt;
+//    printf("\n\ncycle: %ld \n\n", cycle);
     uint64_t begin = dut_ptr->io_logCtrl_log_begin;
     uint64_t end   = dut_ptr->io_logCtrl_log_end;
     bool in_range  = (begin <= cycle) && (cycle <= end);

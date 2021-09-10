@@ -105,6 +105,7 @@ int Difftest::step() {
   num_commit = 0; // reset num_commit this cycle to 0
   // interrupt has the highest priority
   if (dut.event.interrupt) {
+  printf("interrupt in--------------------------------------\n");
     dut.csr.this_pc = dut.event.exceptionPC;
     do_interrupt();
   } else if(dut.event.exception) { 

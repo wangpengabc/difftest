@@ -1,4 +1,5 @@
 #***************************************************************************************
+#***************************************************************************************
 # Copyright (c) 2020-2021 Institute of Computing Technology, Chinese Academy of Sciences
 # Copyright (c) 2020-2021 Peng Cheng Laboratory
 #
@@ -32,7 +33,7 @@ endif
 VEXTRA_FLAGS  = -I$(abspath $(BUILD_DIR)) --x-assign unique -O3 -CFLAGS "$(EMU_CXXFLAGS)" -LDFLAGS "$(EMU_LDFLAGS)"
 
 # Verilator trace support
-EMU_TRACE ?=
+EMU_TRACE ?= 1
 ifeq ($(EMU_TRACE),1)
 VEXTRA_FLAGS += --trace
 endif

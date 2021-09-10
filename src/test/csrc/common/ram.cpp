@@ -188,8 +188,18 @@ void ram_finish() {
   pthread_mutex_destroy(&ram_mutex);
 }
 
+///*** putch helper begin***/
+///*** putch helper end  ***/
+extern "C" uint8_t put_helper(uint8_t en, uint8_t ch) {
+    if(en) {
+        printf("%c", ch);
+        return 1;
+    }
+    return 0;
+}
 
-extern "C" uint64_t ram_read_helper(uint8_t en, uint64_t rIdx) {
+
+extern "C" uint64_t ram_read_helper(uint8_t en, uint64_t rIdx, uint64_t r_cnt=0) {
   if (!ram)
     return 0;
   if (en && rIdx >= EMU_RAM_SIZE / sizeof(uint64_t)) {
@@ -197,6 +207,7 @@ extern "C" uint64_t ram_read_helper(uint8_t en, uint64_t rIdx) {
   }
   pthread_mutex_lock(&ram_mutex);
   uint64_t rdata = (en) ? ram[rIdx] : 0;
+//  printf("\nDEBUG-USER\n data: 0x%lx  rIdx: 0x%lx  en: 0x%x r_cnt: 0x%lx \n", rdata, rIdx, en, r_cnt);
   pthread_mutex_unlock(&ram_mutex);
   return rdata;
 }
@@ -210,6 +221,10 @@ extern "C" void ram_write_helper(uint64_t wIdx, uint64_t wdata, uint64_t wmask, 
     pthread_mutex_lock(&ram_mutex);
     ram[wIdx] = (ram[wIdx] & ~wmask) | (wdata & wmask);
     pthread_mutex_unlock(&ram_mutex);
+
+//    if (wIdx == 0x4f) {
+//        printf("wIdx is 0x4f, data is: %lx, wmask is: %lx", wdata, wmask);
+//    }
   }
 }
 

@@ -35,6 +35,8 @@
 #define WAIT_INTERVAL 1
 #define SNAPSHOT_INTERVAL 60 // unit: second
 
+#define VM_TRACE 1
+
 typedef struct shinfo{
   int exitNum;
   int resInfo;
